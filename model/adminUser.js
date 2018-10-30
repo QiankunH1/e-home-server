@@ -12,9 +12,9 @@ const adminUser = new mongoose.Schema({
     nickname:String,
     avatar: String,
     desc: String,
-    job:Number,
+    job:String,
     phone:String,
-    sex:Number,
+    sex:String,
     },{versionKey:false,timestamps:{createdAt:"createTime",updatedAt:"updateTime"}
 })
 module.exports=mongoose.model("adminuser",adminUser)

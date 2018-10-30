@@ -84,19 +84,23 @@ router.post('/adminUser/login',async(req,res,next)=>{
 })
 
 
-//获取管理员列表
+// 获取管理员列表
 router.get('/adminUser/list',(req,res,next)=>{
+    let count = 0
+    adminUserModel.count().then(res => {
+        count = res
+    })
+    // console.log(count)
     let {pn=1,size=10} = req.query
     pn=parseInt(pn)
     size=parseInt(size)
     if(req.session.user){
-        console.log('aaa')
         adminUserModel.find().skip((pn-1)*size).limit(size).select("-password").then(data=>{
-            console.log("bbb")
             res.json({
                 code:200,
                 msg:"获取管理员列表成功",
                 data,
+                count:count
             })
         })
     }else{
@@ -106,6 +110,36 @@ router.get('/adminUser/list',(req,res,next)=>{
         })
     }
 })
+//获取管理员列表
+// router.get('/adminUser/list',async(req,res,next)=>{
+//     try{
+//         let count = await adminUserModel.count()
+//         console.log(count)
+//         let {pn=1,size=10} = req.query
+//         pn=parseInt(pn)
+//         size=parseInt(size)
+//         if(req.session.user){
+//             console.log('aaa')
+//            const data= await adminUserModel.find().skip((pn-1)*size).limit(size).select("-password")
+//                 console.log("bbb")
+//                 res.json({
+//                     code:200,
+//                     msg:"获取管理员列表成功",
+//                     data,
+//                     count:count
+           
+//         })
+//     }else{
+//             res.json({
+//                 code:401,
+//                 msg:"用户未登录"
+//             })
+//         }
+//     }catch(err){
+//         next(err)
+//     }
+   
+// })
 
 
 
@@ -141,7 +175,7 @@ router.delete("/adminUser/del/:id",async(req,res,next)=>{
         let id= req.params.id
         if(req.session.user){
             console.log("bbb")
-          await adminUserModel.findByIdAndDelete(id)
+          await adminUserModel.findByIdAndRemove(id)
             res.json({
                 code:200,
                 msg:"删除管理员成功",
