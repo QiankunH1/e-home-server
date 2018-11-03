@@ -1,11 +1,11 @@
 const express = require("express")
 const router = express.Router()
-const catetoryModel = require("../model/catetory")
+const catetoryModel = require("../model/category")
 const auth = require("./auth");
 
 
 //添加新闻分类
-router.post("/addcatetory",auth,(req,res,next)=>{
+router.post("/addcategory",auth,(req,res,next)=>{
     let {catetory}=req.body
     if(catetory){
         catetoryModel.create({
@@ -29,7 +29,7 @@ router.post("/addcatetory",auth,(req,res,next)=>{
 })
 
 // 获取分类列表
-router.get('/catetoryList',auth,(req,res,next)=>{
+router.get('/categoryList',auth,(req,res,next)=>{
     let count = 0
     catetoryModel.count().then(res => {
         count = res
@@ -54,7 +54,7 @@ router.get('/catetoryList',auth,(req,res,next)=>{
 
 //获取单个分类
 
-router.get("/catetory",auth,async(req,res,next)=>{
+router.get("/category",auth,async(req,res,next)=>{
     try{
         let {id} = req.query
         const data = await catetoryModel.findById(id)
@@ -75,7 +75,7 @@ router.get("/catetory",auth,async(req,res,next)=>{
 
 //删除一个分类
 
-router.delete("/catetory",auth,async(req,res,next)=>{
+router.delete("/category",auth,async(req,res,next)=>{
     try{
         let {id} = req.query
         const data = await catetoryModel.findByIdAndRemove(id)

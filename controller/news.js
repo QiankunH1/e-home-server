@@ -37,8 +37,9 @@ router.post("/addnews",auth,async(req,res,next)=>{
 
 //获取新闻列表
 
-router.get("/newsList",auth,async(req,res,next)=>{
+router.get("/newsList",async(req,res,next)=>{
     try{
+        let count = await newsModel.count()
         let{pn=1,size=10} = req.query
         pn=parseInt(pn)
         size=parseInt(size)
@@ -48,14 +49,15 @@ router.get("/newsList",auth,async(req,res,next)=>{
         res.json({
             code:200,
             msg:"获取新闻列表成功",
-            data
+            data,
+            count
         })
     }catch(err){
         next(err)
     }
 })
 
-//获取单个新闻
+//获取单个新闻 params
 
 router.get("/new/:id",auth,async(req,res,next)=>{
     try{
@@ -72,6 +74,25 @@ router.get("/new/:id",auth,async(req,res,next)=>{
         next(err)
     }
 })
+
+
+//获取单个新闻 query
+
+// router.get("/new",auth,async(req,res,next)=>{
+//     try{
+//         let {id} =req.query
+//         const data = await newsModel.findById(id)
+//         .populate({ path: "author", select: "-password" })
+//         .populate({ path: "type" });
+//         res.json({
+//             code:200,
+//             msg:"获取单个新闻成功",
+//             data
+//         })
+//     }catch(err){
+//         next(err)
+//     }
+// })
 
 //删除一个新闻
 
